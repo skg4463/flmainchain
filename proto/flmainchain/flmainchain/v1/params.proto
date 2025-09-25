@@ -1,0 +1,13 @@
+syntax = "proto3";
+package flmainchain.flmainchain.v1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "flmainchain/x/flmainchain/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "flmainchain/x/flmainchain/Params";
+  option (gogoproto.equal) = true;
+}
