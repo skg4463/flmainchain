@@ -46,6 +46,7 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 
 	"flmainchain/docs"
+	fedlearningmodulekeeper "flmainchain/x/fedlearning/keeper"
 	flmainchainmodulekeeper "flmainchain/x/flmainchain/keeper"
 )
 
@@ -99,6 +100,7 @@ type App struct {
 	TransferKeeper      ibctransferkeeper.Keeper
 
 	FlmainchainKeeper flmainchainmodulekeeper.Keeper
+	FedlearningKeeper fedlearningmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -179,6 +181,7 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.ParamsKeeper,
 		&app.FlmainchainKeeper,
+		&app.FedlearningKeeper,
 	); err != nil {
 		panic(err)
 	}

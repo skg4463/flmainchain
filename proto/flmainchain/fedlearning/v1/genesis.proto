@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package flmainchain.fedlearning.v1;
+
+import "amino/amino.proto";
+import "flmainchain/fedlearning/v1/current_round.proto";
+import "flmainchain/fedlearning/v1/final_att.proto";
+import "flmainchain/fedlearning/v1/global_model.proto";
+import "flmainchain/fedlearning/v1/model_submission.proto";
+import "flmainchain/fedlearning/v1/params.proto";
+import "flmainchain/fedlearning/v1/round.proto";
+import "flmainchain/fedlearning/v1/submitted_score.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// GenesisState defines the fedlearning module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+  string port_id = 2;
+  CurrentRound current_round = 3;
+  repeated Round round_map = 4 [(gogoproto.nullable) = false];
+  repeated ModelSubmission model_submission_map = 5 [(gogoproto.nullable) = false];
+  repeated SubmittedScore submitted_score_map = 6 [(gogoproto.nullable) = false];
+  repeated FinalAtt final_att_map = 7 [(gogoproto.nullable) = false];
+  repeated GlobalModel global_model_map = 8 [(gogoproto.nullable) = false];
+}

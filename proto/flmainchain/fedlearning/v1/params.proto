@@ -1,0 +1,13 @@
+syntax = "proto3";
+package flmainchain.fedlearning.v1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "flmainchain/x/fedlearning/Params";
+  option (gogoproto.equal) = true;
+}

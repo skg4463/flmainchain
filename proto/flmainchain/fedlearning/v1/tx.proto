@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+package flmainchain.fedlearning.v1;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "flmainchain/fedlearning/v1/params.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // CreateCurrentRound defines the CreateCurrentRound RPC.
+  rpc CreateCurrentRound(MsgCreateCurrentRound) returns (MsgCreateCurrentRoundResponse);
+
+  // UpdateCurrentRound defines the UpdateCurrentRound RPC.
+  rpc UpdateCurrentRound(MsgUpdateCurrentRound) returns (MsgUpdateCurrentRoundResponse);
+
+  // DeleteCurrentRound defines the DeleteCurrentRound RPC.
+  rpc DeleteCurrentRound(MsgDeleteCurrentRound) returns (MsgDeleteCurrentRoundResponse);
+
+  // InitRound defines the InitRound RPC.
+  rpc InitRound(MsgInitRound) returns (MsgInitRoundResponse);
+
+  // SubmitWeight defines the SubmitWeight RPC.
+  rpc SubmitWeight(MsgSubmitWeight) returns (MsgSubmitWeightResponse);
+
+  // SubmitScore defines the SubmitScore RPC.
+  rpc SubmitScore(MsgSubmitScore) returns (MsgSubmitScoreResponse);
+
+  // SubmitGlobalModel defines the SubmitGlobalModel RPC.
+  rpc SubmitGlobalModel(MsgSubmitGlobalModel) returns (MsgSubmitGlobalModelResponse);
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "flmainchain/x/fedlearning/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+// MsgCreateCurrentRound defines the MsgCreateCurrentRound message.
+message MsgCreateCurrentRound {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  uint64 round_id = 3;
+}
+
+// MsgCreateCurrentRoundResponse defines the MsgCreateCurrentRoundResponse message.
+message MsgCreateCurrentRoundResponse {}
+
+// MsgUpdateCurrentRound defines the MsgUpdateCurrentRound message.
+message MsgUpdateCurrentRound {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  uint64 round_id = 3;
+}
+
+// MsgUpdateCurrentRoundResponse defines the MsgUpdateCurrentRoundResponse message.
+message MsgUpdateCurrentRoundResponse {}
+
+// MsgDeleteCurrentRound defines the MsgDeleteCurrentRound message.
+message MsgDeleteCurrentRound {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+// MsgDeleteCurrentRoundResponse defines the MsgDeleteCurrentRoundResponse message.
+message MsgDeleteCurrentRoundResponse {}
+
+// MsgInitRound defines the MsgInitRound message.
+message MsgInitRound {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  repeated string initial_members = 2;
+}
+
+// MsgInitRoundResponse defines the MsgInitRoundResponse message.
+message MsgInitRoundResponse {}
+
+// MsgSubmitWeight defines the MsgSubmitWeight message.
+message MsgSubmitWeight {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  uint64 round_id = 2;
+  string original_hash = 3;
+  string tag = 4;
+}
+
+// MsgSubmitWeightResponse defines the MsgSubmitWeightResponse message.
+message MsgSubmitWeightResponse {}
+
+// MsgSubmitScore defines the MsgSubmitScore message.
+message MsgSubmitScore {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  uint64 round_id = 2;
+  repeated string lnode_addresses = 3;
+  repeated string scores = 4;
+}
+
+// MsgSubmitScoreResponse defines the MsgSubmitScoreResponse message.
+message MsgSubmitScoreResponse {}
+
+// MsgSubmitGlobalModel defines the MsgSubmitGlobalModel message.
+message MsgSubmitGlobalModel {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  uint64 round_id = 2;
+  string original_hash = 3;
+}
+
+// MsgSubmitGlobalModelResponse defines the MsgSubmitGlobalModelResponse message.
+message MsgSubmitGlobalModelResponse {}

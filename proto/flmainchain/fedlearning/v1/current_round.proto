@@ -1,0 +1,10 @@
+syntax = "proto3";
+package flmainchain.fedlearning.v1;
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// CurrentRound defines the CurrentRound message.
+message CurrentRound {
+  uint64 round_id = 1;
+  string creator = 2;
+}

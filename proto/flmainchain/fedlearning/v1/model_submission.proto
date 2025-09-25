@@ -1,0 +1,11 @@
+syntax = "proto3";
+package flmainchain.fedlearning.v1;
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// ModelSubmission defines the ModelSubmission message.
+message ModelSubmission {
+  string original_hash = 1;
+  string tag = 2;
+  string submitter = 3;
+}

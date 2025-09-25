@@ -1,6 +1,9 @@
 package app
 
 import (
+	fedlearningmodule "flmainchain/x/fedlearning/module"
+	fedlearningmoduletypes "flmainchain/x/fedlearning/types"
+
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -117,6 +120,8 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	ibcv2Router := ibcapi.NewRouter().
 		AddRoute(ibctransfertypes.PortID, transferStackV2)
 
+	fedlearningIBCModule := fedlearningmodule.NewIBCModule(app.appCodec, app.FedlearningKeeper)
+	ibcRouter.AddRoute(fedlearningmoduletypes.ModuleName, fedlearningIBCModule)
 	// this line is used by starport scaffolding # ibc/app/module
 
 	app.IBCKeeper.SetRouter(ibcRouter)

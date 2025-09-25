@@ -16,11 +16,24 @@ client:
 faucet:
   name: bob
   coins:
-  - 5token
+  - 50000token
   - 100000stake
+  port: 4501
 validators:
 - name: alice
   bonded: 100000000stake
+  app:
+    api:
+      address: "tcp://localhost:1318"
+    grpc:
+      address: "localhost:9091"
+    grpc-web:
+      address: "localhost:9092"
+  config:
+    p2p:
+      laddr: "tcp://0.0.0.0:26666"       # flstorage 26656과 다르게
+    rpc:
+      laddr: "tcp://0.0.0.0:26658"
 - name: validator1
   bonded: 200000000stake
 - name: validator2

@@ -1,0 +1,10 @@
+syntax = "proto3";
+package flmainchain.fedlearning.v1;
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// GlobalModel defines the GlobalModel message.
+message GlobalModel {
+  uint64 round_id = 1;
+  string original_hash = 2;
+}

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package flmainchain.fedlearning.v1;
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// Round defines the Round message.
+message Round {
+  uint64 round_id = 1;
+  string status = 2;
+  repeated string required_l_nodes = 3;
+  repeated string submitted_l_nodes = 4;
+  repeated string required_c_nodes = 5;
+  repeated string submitted_c_nodes = 6;
+}

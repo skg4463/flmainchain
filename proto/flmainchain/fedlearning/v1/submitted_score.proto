@@ -1,0 +1,11 @@
+syntax = "proto3";
+package flmainchain.fedlearning.v1;
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// SubmittedScore defines the SubmittedScore message.
+message SubmittedScore {
+  string score_id = 1;
+  repeated string lnode_addresses = 2;
+  repeated string scores = 3;
+}

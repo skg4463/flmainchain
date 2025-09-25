@@ -1,0 +1,14 @@
+syntax = "proto3";
+package flmainchain.fedlearning.v1;
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// FedlearningPacketData defines the Fedlearning data packet.
+message FedlearningPacketData {
+  oneof packet {
+    NoData noData = 1;
+  }
+}
+
+// NoData defines an empty data packet.
+message NoData {}

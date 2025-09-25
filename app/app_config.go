@@ -1,6 +1,8 @@
 package app
 
 import (
+	_ "flmainchain/x/fedlearning/module"
+	fedlearningmoduletypes "flmainchain/x/fedlearning/types"
 	_ "flmainchain/x/flmainchain/module"
 	flmainchainmoduletypes "flmainchain/x/flmainchain/types"
 	"time"
@@ -83,6 +85,7 @@ var (
 		{Account: nft.ModuleName},
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		{Account: icatypes.ModuleName},
+		{Account: fedlearningmoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -127,6 +130,7 @@ var (
 						ibcexported.ModuleName,
 						// chain modules
 						flmainchainmoduletypes.ModuleName,
+						fedlearningmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/beginBlockers
 					},
 					EndBlockers: []string{
@@ -136,6 +140,7 @@ var (
 						group.ModuleName,
 						// chain modules
 						flmainchainmoduletypes.ModuleName,
+						fedlearningmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/endBlockers
 					},
 					// The following is mostly only needed when ModuleName != StoreKey name.
@@ -173,6 +178,7 @@ var (
 						icatypes.ModuleName,
 						// chain modules
 						flmainchainmoduletypes.ModuleName,
+						fedlearningmoduletypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/initGenesis
 					},
 				}),
@@ -272,6 +278,10 @@ var (
 			{
 				Name:   flmainchainmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&flmainchainmoduletypes.Module{}),
+			},
+			{
+				Name:   fedlearningmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&fedlearningmoduletypes.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

@@ -1,0 +1,205 @@
+syntax = "proto3";
+
+package flmainchain.fedlearning.v1;
+
+import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "flmainchain/fedlearning/v1/current_round.proto";
+import "flmainchain/fedlearning/v1/final_att.proto";
+import "flmainchain/fedlearning/v1/global_model.proto";
+import "flmainchain/fedlearning/v1/model_submission.proto";
+import "flmainchain/fedlearning/v1/params.proto";
+import "flmainchain/fedlearning/v1/round.proto";
+import "flmainchain/fedlearning/v1/submitted_score.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/params";
+  }
+
+  // Queries a CurrentRound by index.
+  rpc GetCurrentRound(QueryGetCurrentRoundRequest) returns (QueryGetCurrentRoundResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/current_round";
+  }
+
+  // ListRound Queries a list of Round items.
+  rpc GetRound(QueryGetRoundRequest) returns (QueryGetRoundResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/round/{round_id}";
+  }
+
+  // ListRound defines the ListRound RPC.
+  rpc ListRound(QueryAllRoundRequest) returns (QueryAllRoundResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/round";
+  }
+
+  // ListModelSubmission Queries a list of ModelSubmission items.
+  rpc GetModelSubmission(QueryGetModelSubmissionRequest) returns (QueryGetModelSubmissionResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/model_submission/{original_hash}";
+  }
+
+  // ListModelSubmission defines the ListModelSubmission RPC.
+  rpc ListModelSubmission(QueryAllModelSubmissionRequest) returns (QueryAllModelSubmissionResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/model_submission";
+  }
+
+  // ListSubmittedScore Queries a list of SubmittedScore items.
+  rpc GetSubmittedScore(QueryGetSubmittedScoreRequest) returns (QueryGetSubmittedScoreResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/submitted_score/{score_id}";
+  }
+
+  // ListSubmittedScore defines the ListSubmittedScore RPC.
+  rpc ListSubmittedScore(QueryAllSubmittedScoreRequest) returns (QueryAllSubmittedScoreResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/submitted_score";
+  }
+
+  // ListFinalAtt Queries a list of FinalAtt items.
+  rpc GetFinalAtt(QueryGetFinalAttRequest) returns (QueryGetFinalAttResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/final_att/{round_id}";
+  }
+
+  // ListFinalAtt defines the ListFinalAtt RPC.
+  rpc ListFinalAtt(QueryAllFinalAttRequest) returns (QueryAllFinalAttResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/final_att";
+  }
+
+  // ListGlobalModel Queries a list of GlobalModel items.
+  rpc GetGlobalModel(QueryGetGlobalModelRequest) returns (QueryGetGlobalModelResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/global_model/{round_id}";
+  }
+
+  // ListGlobalModel defines the ListGlobalModel RPC.
+  rpc ListGlobalModel(QueryAllGlobalModelRequest) returns (QueryAllGlobalModelResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/global_model";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryGetCurrentRoundRequest defines the QueryGetCurrentRoundRequest message.
+message QueryGetCurrentRoundRequest {}
+
+// QueryGetCurrentRoundResponse defines the QueryGetCurrentRoundResponse message.
+message QueryGetCurrentRoundResponse {
+  CurrentRound current_round = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetRoundRequest defines the QueryGetRoundRequest message.
+message QueryGetRoundRequest {
+  uint64 round_id = 1;
+}
+
+// QueryGetRoundResponse defines the QueryGetRoundResponse message.
+message QueryGetRoundResponse {
+  Round round = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllRoundRequest defines the QueryAllRoundRequest message.
+message QueryAllRoundRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllRoundResponse defines the QueryAllRoundResponse message.
+message QueryAllRoundResponse {
+  repeated Round round = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetModelSubmissionRequest defines the QueryGetModelSubmissionRequest message.
+message QueryGetModelSubmissionRequest {
+  string original_hash = 1;
+}
+
+// QueryGetModelSubmissionResponse defines the QueryGetModelSubmissionResponse message.
+message QueryGetModelSubmissionResponse {
+  ModelSubmission model_submission = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllModelSubmissionRequest defines the QueryAllModelSubmissionRequest message.
+message QueryAllModelSubmissionRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllModelSubmissionResponse defines the QueryAllModelSubmissionResponse message.
+message QueryAllModelSubmissionResponse {
+  repeated ModelSubmission model_submission = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetSubmittedScoreRequest defines the QueryGetSubmittedScoreRequest message.
+message QueryGetSubmittedScoreRequest {
+  string score_id = 1;
+}
+
+// QueryGetSubmittedScoreResponse defines the QueryGetSubmittedScoreResponse message.
+message QueryGetSubmittedScoreResponse {
+  SubmittedScore submitted_score = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllSubmittedScoreRequest defines the QueryAllSubmittedScoreRequest message.
+message QueryAllSubmittedScoreRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllSubmittedScoreResponse defines the QueryAllSubmittedScoreResponse message.
+message QueryAllSubmittedScoreResponse {
+  repeated SubmittedScore submitted_score = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetFinalAttRequest defines the QueryGetFinalAttRequest message.
+message QueryGetFinalAttRequest {
+  uint64 round_id = 1;
+}
+
+// QueryGetFinalAttResponse defines the QueryGetFinalAttResponse message.
+message QueryGetFinalAttResponse {
+  FinalAtt final_att = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllFinalAttRequest defines the QueryAllFinalAttRequest message.
+message QueryAllFinalAttRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllFinalAttResponse defines the QueryAllFinalAttResponse message.
+message QueryAllFinalAttResponse {
+  repeated FinalAtt final_att = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetGlobalModelRequest defines the QueryGetGlobalModelRequest message.
+message QueryGetGlobalModelRequest {
+  uint64 round_id = 1;
+}
+
+// QueryGetGlobalModelResponse defines the QueryGetGlobalModelResponse message.
+message QueryGetGlobalModelResponse {
+  GlobalModel global_model = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllGlobalModelRequest defines the QueryAllGlobalModelRequest message.
+message QueryAllGlobalModelRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllGlobalModelResponse defines the QueryAllGlobalModelResponse message.
+message QueryAllGlobalModelResponse {
+  repeated GlobalModel global_model = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
