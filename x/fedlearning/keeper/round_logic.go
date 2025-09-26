@@ -11,27 +11,18 @@ import (
 	"flmainchain/x/fedlearning/types"
 )
 
-// AdvanceRoundState. BeginBlocker에서 호출됨.
-// 모든 참여자의 제출이 완료되면 라운드 단계를 자동으로 진행.
 func (k Keeper) AdvanceRoundState(ctx sdk.Context) {
 	currentRound, err := k.CurrentRound.Get(ctx)
-	if err != nil {
-		// 현재 라운드 정보가 없으면 아무것도 하지 않음.
-		return
-	}
+	if err != nil { return }
 	round, err := k.Round.Get(ctx, currentRound.RoundId)
-	if err != nil {
-		return
-	}
+	if err != nil { return }
 
-	// L-node 제출이 모두 완료되었는지 확인.
 	if round.Status == "WeightSubmissionOpen" && len(round.SubmittedLNodes) >= len(round.RequiredLNodes) {
 		round.Status = "ScoreSubmissionOpen"
 		k.Round.Set(ctx, round.RoundId, round)
 		ctx.Logger().Info("Round advanced to ScoreSubmissionOpen", "round", currentRound.RoundId)
 	}
 
-	// C-node 제출이 모두 완료되었는지 확인.
 	if round.Status == "ScoreSubmissionOpen" && len(round.SubmittedCNodes) >= len(round.RequiredCNodes) {
 		round.Status = "AggregationReady"
 		k.Round.Set(ctx, round.RoundId, round)
@@ -39,7 +30,6 @@ func (k Keeper) AdvanceRoundState(ctx sdk.Context) {
 	}
 }
 
-// AggregateScoresAndCreateATT. 3N-1 블록의 EndBlocker에서 호출됨.
 func (k Keeper) AggregateScoresAndCreateATT(ctx sdk.Context) {
 	currentRound, err := k.CurrentRound.Get(ctx)
 	if err != nil { return }
@@ -47,25 +37,15 @@ func (k Keeper) AggregateScoresAndCreateATT(ctx sdk.Context) {
 	if err != nil || round.Status != "AggregationReady" { return }
 
 	scoreMap := make(map[string][]uint64)
-	
-	// --- 이 부분만 수정 ---
-	// k.storeService에서 먼저 KVStore를 열어줍니다.
-	kvStore := k.storeService.OpenKVStore(ctx)
-	// 열린 KVStore를 어댑터에 전달합니다.
-	storeAdapter := runtime.KVStoreAdapter(kvStore)
-	// --- 수정 끝 ---
-	
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.SubmittedScoreKey)
-	
 	iteratorPrefix := []byte(fmt.Sprintf("%d-", round.RoundId))
-	
 	iterator := store.Iterator(iteratorPrefix, nil)
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
 		var submittedScore types.SubmittedScore
 		k.cdc.MustUnmarshal(iterator.Value(), &submittedScore)
-		
 		for i, lNodeAddr := range submittedScore.LnodeAddresses {
 			score, err := strconv.ParseUint(submittedScore.Scores[i], 10, 64)
 			if err != nil { continue }
@@ -73,7 +53,6 @@ func (k Keeper) AggregateScoresAndCreateATT(ctx sdk.Context) {
 		}
 	}
 	
-	// ... (이하 평균 계산 및 저장 로직은 이전과 동일) ...
 	type lnodeScorePair struct { Addr string; Score uint64 }
 	var sortedScores []lnodeScorePair
 	for lNode, scores := range scoreMap {
@@ -97,9 +76,6 @@ func (k Keeper) AggregateScoresAndCreateATT(ctx sdk.Context) {
 	ctx.Logger().Info("ATT for round aggregated and saved.", "round", round.RoundId)
 }
 
-
-// ElectNextCommittee. 3N 블록의 EndBlocker에서 호출됨.
-// 최종 점수표를 바탕으로 다음 라운드 위원회를 선출.
 func (k Keeper) ElectNextCommittee(ctx sdk.Context) {
     currentRound, err := k.CurrentRound.Get(ctx)
 	if err != nil { return }
@@ -118,8 +94,9 @@ func (k Keeper) ElectNextCommittee(ctx sdk.Context) {
 	if len(nextCommitteeMembers) == 0 { return }
 	
 	nextRoundID := round.RoundId + 1
-	k.RoundCommittee.Set(ctx, nextRoundID, types.RoundCommittee{Members: nextCommitteeMembers})
+	k.RoundCommittee.Set(ctx, nextRoundID, types.RoundCommittee{RoundId: nextRoundID, Members: nextCommitteeMembers})
 	k.Round.Set(ctx, nextRoundID, types.Round{
+		RoundId:         nextRoundID,
 		Status:          "WeightSubmissionOpen",
 		RequiredLNodes:  nextCommitteeMembers, 
 		SubmittedLNodes: []string{},

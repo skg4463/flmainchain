@@ -3,6 +3,7 @@ package app
 import (
 	fedlearningmodule "flmainchain/x/fedlearning/module"
 	fedlearningmoduletypes "flmainchain/x/fedlearning/types"
+	//"flmainchain/x/fedlearning"
 
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
@@ -108,13 +109,17 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		transferStackV2    ibcapi.IBCModule    = ibctransferv2.NewIBCModule(app.TransferKeeper)
 		icaControllerStack porttypes.IBCModule = icacontroller.NewIBCMiddleware(app.ICAControllerKeeper)
 		icaHostStack       porttypes.IBCModule = icahost.NewIBCModule(app.ICAHostKeeper)
+		// fedlearning Module ibc 연결
+		fedlearningStack   porttypes.IBCModule = fedlearning.NewIBCModule(app.FedlearningKeeper)
 	)
 
+	
 	// create IBC v1 router, add transfer route, then set it on the keeper
 	ibcRouter := porttypes.NewRouter().
 		AddRoute(ibctransfertypes.ModuleName, transferStack).
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerStack).
-		AddRoute(icahosttypes.SubModuleName, icaHostStack)
+		AddRoute(icahosttypes.SubModuleName, icaHostStack).
+		AddRoute(fedlearningmoduletypes.ModuleName, fedlearningStack) //add fedlearning route
 
 	// create IBC v2 router, add transfer route, then set it on the keeper
 	ibcv2Router := ibcapi.NewRouter().
