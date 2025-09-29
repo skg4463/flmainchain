@@ -23,7 +23,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 				PortId:       types.PortID,
-				CurrentRound: &types.CurrentRound{RoundId: 53}, RoundMap: []types.Round{{RoundId: 0}, {RoundId: 1}}, ModelSubmissionMap: []types.ModelSubmission{{OriginalHash: "0"}, {OriginalHash: "1"}}, SubmittedScoreMap: []types.SubmittedScore{{ScoreId: "0"}, {ScoreId: "1"}}, FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}},
+				CurrentRound: &types.CurrentRound{RoundId: 53}, RoundMap: []types.Round{{RoundId: 0}, {RoundId: 1}}, ModelSubmissionMap: []types.ModelSubmission{{OriginalHash: "0"}, {OriginalHash: "1"}}, SubmittedScoreMap: []types.SubmittedScore{{ScoreId: "0"}, {ScoreId: "1"}}, FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}, RoundCommitteeMap: []types.RoundCommittee{{RoundId: 0}, {RoundId: 1}}},
 			valid: true,
 		}, {
 			desc: "duplicated round",
@@ -36,7 +36,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						RoundId: 0,
 					},
 				},
-				ModelSubmissionMap: []types.ModelSubmission{{OriginalHash: "0"}, {OriginalHash: "1"}}, SubmittedScoreMap: []types.SubmittedScore{{ScoreId: "0"}, {ScoreId: "1"}}, FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}},
+				ModelSubmissionMap: []types.ModelSubmission{{OriginalHash: "0"}, {OriginalHash: "1"}}, SubmittedScoreMap: []types.SubmittedScore{{ScoreId: "0"}, {ScoreId: "1"}}, FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}, RoundCommitteeMap: []types.RoundCommittee{{RoundId: 0}, {RoundId: 1}}},
 			valid: false,
 		}, {
 			desc: "duplicated modelSubmission",
@@ -49,7 +49,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						OriginalHash: "0",
 					},
 				},
-				SubmittedScoreMap: []types.SubmittedScore{{ScoreId: "0"}, {ScoreId: "1"}}, FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}},
+				SubmittedScoreMap: []types.SubmittedScore{{ScoreId: "0"}, {ScoreId: "1"}}, FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}, RoundCommitteeMap: []types.RoundCommittee{{RoundId: 0}, {RoundId: 1}}},
 			valid: false,
 		}, {
 			desc: "duplicated submittedScore",
@@ -62,7 +62,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						ScoreId: "0",
 					},
 				},
-				FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}},
+				FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}, RoundCommitteeMap: []types.RoundCommittee{{RoundId: 0}, {RoundId: 1}}},
 			valid: false,
 		}, {
 			desc: "duplicated finalAtt",
@@ -75,12 +75,25 @@ func TestGenesisState_Validate(t *testing.T) {
 						RoundId: 0,
 					},
 				},
-				GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}},
+				GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}, RoundCommitteeMap: []types.RoundCommittee{{RoundId: 0}, {RoundId: 1}}},
 			valid: false,
 		}, {
 			desc: "duplicated globalModel",
 			genState: &types.GenesisState{
 				GlobalModelMap: []types.GlobalModel{
+					{
+						RoundId: 0,
+					},
+					{
+						RoundId: 0,
+					},
+				},
+				RoundCommitteeMap: []types.RoundCommittee{{RoundId: 0}, {RoundId: 1}}},
+			valid: false,
+		}, {
+			desc: "duplicated roundCommittee",
+			genState: &types.GenesisState{
+				RoundCommitteeMap: []types.RoundCommittee{
 					{
 						RoundId: 0,
 					},

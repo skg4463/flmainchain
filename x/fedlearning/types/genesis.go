@@ -10,7 +10,7 @@ import (
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Params: DefaultParams(),
-		PortId: PortID, CurrentRound: nil, RoundMap: []Round{}, ModelSubmissionMap: []ModelSubmission{}, SubmittedScoreMap: []SubmittedScore{}, FinalAttMap: []FinalAtt{}, GlobalModelMap: []GlobalModel{}}
+		PortId: PortID, CurrentRound: nil, RoundMap: []Round{}, ModelSubmissionMap: []ModelSubmission{}, SubmittedScoreMap: []SubmittedScore{}, FinalAttMap: []FinalAtt{}, GlobalModelMap: []GlobalModel{}, RoundCommitteeMap: []RoundCommittee{}}
 }
 
 // Validate performs basic genesis state validation returning an error upon any
@@ -63,6 +63,15 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for globalModel")
 		}
 		globalModelIndexMap[index] = struct{}{}
+	}
+	roundCommitteeIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.RoundCommitteeMap {
+		index := fmt.Sprint(elem.RoundId)
+		if _, ok := roundCommitteeIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for roundCommittee")
+		}
+		roundCommitteeIndexMap[index] = struct{}{}
 	}
 
 	return gs.Params.Validate()

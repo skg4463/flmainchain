@@ -2,8 +2,9 @@ package fedlearning
 
 import (
 	"context"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"flmainchain/x/fedlearning/keeper"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // BeginBlocker. 매 블록 시작 시 실행.

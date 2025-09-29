@@ -12,7 +12,6 @@ import (
 func (k msgServer) SubmitScore(goCtx context.Context, msg *types.MsgSubmitScore) (*types.MsgSubmitScoreResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// k.Round -> k.Keeper.Round, msg.RoundID -> msg.RoundId
 	round, err := k.Keeper.Round.Get(ctx, msg.RoundId)
 	if err != nil { return nil, errorsmod.Wrapf(types.ErrRoundNotFound, "round %d: %s", msg.RoundId, err.Error()) }
 	if round.Status != "ScoreSubmissionOpen" { return nil, errorsmod.Wrapf(types.ErrInvalidRoundStatus, "expected ScoreSubmissionOpen, got %s", round.Status) }
@@ -21,7 +20,7 @@ func (k msgServer) SubmitScore(goCtx context.Context, msg *types.MsgSubmitScore)
 	if len(msg.LnodeAddresses) != len(msg.Scores) { return nil, errorsmod.Wrapf(types.ErrInvalidData, "address count (%d) and score count (%d) do not match", len(msg.LnodeAddresses), len(msg.Scores)) }
 
 	id := fmt.Sprintf("%d-%s", msg.RoundId, msg.Creator)
-	// k.SubmittedScore -> k.Keeper.SubmittedScore
+	// Creator 필드 삭제
 	err = k.Keeper.SubmittedScore.Set(ctx, id, types.SubmittedScore{
 		LnodeAddresses: msg.LnodeAddresses,
 		Scores:         msg.Scores,
@@ -29,7 +28,6 @@ func (k msgServer) SubmitScore(goCtx context.Context, msg *types.MsgSubmitScore)
 	if err != nil { return nil, err }
 
 	round.SubmittedCNodes = append(round.SubmittedCNodes, msg.Creator)
-	// k.Round -> k.Keeper.Round, round.RoundID -> round.RoundId
 	err = k.Keeper.Round.Set(ctx, round.RoundId, round)
 	if err != nil { return nil, err }
 

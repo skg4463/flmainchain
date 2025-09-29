@@ -44,6 +44,11 @@ func (k Keeper) InitGenesis(ctx context.Context, genState types.GenesisState) er
 			return err
 		}
 	}
+	for _, elem := range genState.RoundCommitteeMap {
+		if err := k.RoundCommittee.Set(ctx, elem.RoundId, elem); err != nil {
+			return err
+		}
+	}
 
 	return k.Params.Set(ctx, genState.Params)
 }
@@ -92,6 +97,12 @@ func (k Keeper) ExportGenesis(ctx context.Context) (*types.GenesisState, error) 
 	}
 	if err := k.GlobalModel.Walk(ctx, nil, func(_ uint64, val types.GlobalModel) (stop bool, err error) {
 		genesis.GlobalModelMap = append(genesis.GlobalModelMap, val)
+		return false, nil
+	}); err != nil {
+		return nil, err
+	}
+	if err := k.RoundCommittee.Walk(ctx, nil, func(_ uint64, val types.RoundCommittee) (stop bool, err error) {
+		genesis.RoundCommitteeMap = append(genesis.RoundCommitteeMap, val)
 		return false, nil
 	}); err != nil {
 		return nil, err

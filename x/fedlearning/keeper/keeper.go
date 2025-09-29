@@ -35,6 +35,7 @@ type Keeper struct {
 	SubmittedScore  collections.Map[string, types.SubmittedScore]
 	FinalAtt        collections.Map[uint64, types.FinalAtt]
 	GlobalModel     collections.Map[uint64, types.GlobalModel]
+	RoundCommittee  collections.Map[uint64, types.RoundCommittee]
 }
 
 func NewKeeper(
@@ -64,7 +65,7 @@ func NewKeeper(
 		ibcKeeperFn:   ibcKeeperFn,
 		Port:          collections.NewItem(sb, types.PortKey, "port", collections.StringValue),
 		Params:        collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
-		CurrentRound:  collections.NewItem(sb, types.CurrentRoundKey, "currentRound", codec.CollValue[types.CurrentRound](cdc)), Round: collections.NewMap(sb, types.RoundKey, "round", collections.Uint64Key, codec.CollValue[types.Round](cdc)), ModelSubmission: collections.NewMap(sb, types.ModelSubmissionKey, "modelSubmission", collections.StringKey, codec.CollValue[types.ModelSubmission](cdc)), SubmittedScore: collections.NewMap(sb, types.SubmittedScoreKey, "submittedScore", collections.StringKey, codec.CollValue[types.SubmittedScore](cdc)), FinalAtt: collections.NewMap(sb, types.FinalAttKey, "finalAtt", collections.Uint64Key, codec.CollValue[types.FinalAtt](cdc)), GlobalModel: collections.NewMap(sb, types.GlobalModelKey, "globalModel", collections.Uint64Key, codec.CollValue[types.GlobalModel](cdc))}
+		CurrentRound:  collections.NewItem(sb, types.CurrentRoundKey, "currentRound", codec.CollValue[types.CurrentRound](cdc)), Round: collections.NewMap(sb, types.RoundKey, "round", collections.Uint64Key, codec.CollValue[types.Round](cdc)), ModelSubmission: collections.NewMap(sb, types.ModelSubmissionKey, "modelSubmission", collections.StringKey, codec.CollValue[types.ModelSubmission](cdc)), SubmittedScore: collections.NewMap(sb, types.SubmittedScoreKey, "submittedScore", collections.StringKey, codec.CollValue[types.SubmittedScore](cdc)), FinalAtt: collections.NewMap(sb, types.FinalAttKey, "finalAtt", collections.Uint64Key, codec.CollValue[types.FinalAtt](cdc)), GlobalModel: collections.NewMap(sb, types.GlobalModelKey, "globalModel", collections.Uint64Key, codec.CollValue[types.GlobalModel](cdc)), RoundCommittee: collections.NewMap(sb, types.RoundCommitteeKey, "roundCommittee", collections.Uint64Key, codec.CollValue[types.RoundCommittee](cdc))}
 
 	schema, err := sb.Build()
 	if err != nil {

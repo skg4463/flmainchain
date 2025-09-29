@@ -1,6 +1,17 @@
 # flmainchain
 **flmainchain** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
 
+## Environment
+Ignite CLI version:             v29.3.1-dev
+
+Ignite CLI source hash:         845a1a8886b8a098ed56372bab45ddee5caea526
+
+Ignite CLI config version:      v1
+
+Cosmos SDK version:             v0.53.3
+
+Your go version:                go version go1.24.7 linux/amd64
+
 ## Get started
 
 ```
@@ -8,6 +19,19 @@ ignite chain serve
 ```
 
 `serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+
+Port info: 
+    tendermint node(RPC): 26658,
+    blockchain API: 1318,
+    token faucet 4501,
+    gPRC: 9091
+
+```
+query options: 
+
+
+flmainchaind query bank balances ADDRESS --node tcp://localhost:26658
+```
 
 ### Configure
 

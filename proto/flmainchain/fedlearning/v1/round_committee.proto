@@ -1,0 +1,10 @@
+syntax = "proto3";
+package flmainchain.fedlearning.v1;
+
+option go_package = "flmainchain/x/fedlearning/types";
+
+// RoundCommittee defines the RoundCommittee message.
+message RoundCommittee {
+  uint64 round_id = 1;
+  repeated string members = 2;
+}

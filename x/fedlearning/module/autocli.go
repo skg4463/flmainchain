@@ -83,6 +83,18 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Alias:          []string{"show-global-model"},
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "round_id"}},
 				},
+				{
+					RpcMethod: "ListRoundCommittee",
+					Use:       "list-round-committee",
+					Short:     "List all RoundCommittee",
+				},
+				{
+					RpcMethod:      "GetRoundCommittee",
+					Use:            "get-round-committee [id]",
+					Short:          "Gets a RoundCommittee",
+					Alias:          []string{"show-round-committee"},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "round_id"}},
+				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},

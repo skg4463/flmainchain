@@ -12,7 +12,7 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params:       types.DefaultParams(),
 		PortId:       types.PortID,
-		CurrentRound: &types.CurrentRound{RoundId: 93}, RoundMap: []types.Round{{RoundId: 0}, {RoundId: 1}}, ModelSubmissionMap: []types.ModelSubmission{{OriginalHash: "0"}, {OriginalHash: "1"}}, SubmittedScoreMap: []types.SubmittedScore{{ScoreId: "0"}, {ScoreId: "1"}}, FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}}
+		CurrentRound: &types.CurrentRound{RoundId: 93}, RoundMap: []types.Round{{RoundId: 0}, {RoundId: 1}}, ModelSubmissionMap: []types.ModelSubmission{{OriginalHash: "0"}, {OriginalHash: "1"}}, SubmittedScoreMap: []types.SubmittedScore{{ScoreId: "0"}, {ScoreId: "1"}}, FinalAttMap: []types.FinalAtt{{RoundId: 0}, {RoundId: 1}}, GlobalModelMap: []types.GlobalModel{{RoundId: 0}, {RoundId: 1}}, RoundCommitteeMap: []types.RoundCommittee{{RoundId: 0}, {RoundId: 1}}}
 
 	f := initFixture(t)
 	err := f.keeper.InitGenesis(f.ctx, genesisState)
@@ -29,5 +29,6 @@ func TestGenesis(t *testing.T) {
 	require.EqualExportedValues(t, genesisState.SubmittedScoreMap, got.SubmittedScoreMap)
 	require.EqualExportedValues(t, genesisState.FinalAttMap, got.FinalAttMap)
 	require.EqualExportedValues(t, genesisState.GlobalModelMap, got.GlobalModelMap)
+	require.EqualExportedValues(t, genesisState.RoundCommitteeMap, got.RoundCommitteeMap)
 
 }

@@ -94,6 +94,7 @@ func (k Keeper) ElectNextCommittee(ctx sdk.Context) {
 	if len(nextCommitteeMembers) == 0 { return }
 	
 	nextRoundID := round.RoundId + 1
+	// Roundcommittee -> RoundCommittee 로 수정
 	k.RoundCommittee.Set(ctx, nextRoundID, types.RoundCommittee{RoundId: nextRoundID, Members: nextCommitteeMembers})
 	k.Round.Set(ctx, nextRoundID, types.Round{
 		RoundId:         nextRoundID,

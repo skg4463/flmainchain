@@ -10,14 +10,13 @@ import (
 func (k msgServer) SubmitGlobalModel(goCtx context.Context, msg *types.MsgSubmitGlobalModel) (*types.MsgSubmitGlobalModelResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// k.RoundCommittee -> k.Keeper.RoundCommittee, msg.RoundID -> msg.RoundId
+	// Roundcommittee -> RoundCommittee 로 수정
 	committee, err := k.Keeper.RoundCommittee.Get(ctx, msg.RoundId)
 	if err != nil { return nil, errorsmod.Wrapf(types.ErrRoundNotFound, "committee for round %d not found: %s", msg.RoundId, err.Error()) }
 	if len(committee.Members) == 0 || msg.Creator != committee.Members[0] {
 		return nil, errorsmod.Wrapf(types.ErrNotCommitteeLeader, "address %s is not the committee leader", msg.Creator)
 	}
 
-	// k.GlobalModel -> k.Keeper.GlobalModel, msg.RoundID -> msg.RoundId
 	err = k.Keeper.GlobalModel.Set(ctx, msg.RoundId, types.GlobalModel{
 		OriginalHash: msg.OriginalHash,
 	})

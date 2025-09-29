@@ -9,6 +9,7 @@ import "flmainchain/fedlearning/v1/global_model.proto";
 import "flmainchain/fedlearning/v1/model_submission.proto";
 import "flmainchain/fedlearning/v1/params.proto";
 import "flmainchain/fedlearning/v1/round.proto";
+import "flmainchain/fedlearning/v1/round_committee.proto";
 import "flmainchain/fedlearning/v1/submitted_score.proto";
 import "gogoproto/gogo.proto";
 
@@ -28,4 +29,5 @@ message GenesisState {
   repeated SubmittedScore submitted_score_map = 6 [(gogoproto.nullable) = false];
   repeated FinalAtt final_att_map = 7 [(gogoproto.nullable) = false];
   repeated GlobalModel global_model_map = 8 [(gogoproto.nullable) = false];
+  repeated RoundCommittee round_committee_map = 9 [(gogoproto.nullable) = false];
 }

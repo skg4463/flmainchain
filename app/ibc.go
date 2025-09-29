@@ -3,7 +3,8 @@ package app
 import (
 	fedlearningmodule "flmainchain/x/fedlearning/module"
 	fedlearningmoduletypes "flmainchain/x/fedlearning/types"
-	//"flmainchain/x/fedlearning"
+
+	// "flmainchain/x/fedlearning"
 
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
@@ -110,10 +111,9 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		icaControllerStack porttypes.IBCModule = icacontroller.NewIBCMiddleware(app.ICAControllerKeeper)
 		icaHostStack       porttypes.IBCModule = icahost.NewIBCModule(app.ICAHostKeeper)
 		// fedlearning Module ibc 연결
-		fedlearningStack   porttypes.IBCModule = fedlearning.NewIBCModule(app.FedlearningKeeper)
+        fedlearningStack   porttypes.IBCModule = fedlearningmodule.NewIBCModule(app.appCodec, app.FedlearningKeeper)
 	)
 
-	
 	// create IBC v1 router, add transfer route, then set it on the keeper
 	ibcRouter := porttypes.NewRouter().
 		AddRoute(ibctransfertypes.ModuleName, transferStack).
@@ -125,8 +125,8 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	ibcv2Router := ibcapi.NewRouter().
 		AddRoute(ibctransfertypes.PortID, transferStackV2)
 
-	fedlearningIBCModule := fedlearningmodule.NewIBCModule(app.appCodec, app.FedlearningKeeper)
-	ibcRouter.AddRoute(fedlearningmoduletypes.ModuleName, fedlearningIBCModule)
+	// fedlearningIBCModule := fedlearningmodule.NewIBCModule(app.appCodec, app.FedlearningKeeper)
+	// ibcRouter.AddRoute(fedlearningmoduletypes.ModuleName, fedlearningIBCModule)
 	// this line is used by starport scaffolding # ibc/app/module
 
 	app.IBCKeeper.SetRouter(ibcRouter)

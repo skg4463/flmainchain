@@ -10,6 +10,7 @@ import "flmainchain/fedlearning/v1/global_model.proto";
 import "flmainchain/fedlearning/v1/model_submission.proto";
 import "flmainchain/fedlearning/v1/params.proto";
 import "flmainchain/fedlearning/v1/round.proto";
+import "flmainchain/fedlearning/v1/round_committee.proto";
 import "flmainchain/fedlearning/v1/submitted_score.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
@@ -76,6 +77,16 @@ service Query {
   // ListGlobalModel defines the ListGlobalModel RPC.
   rpc ListGlobalModel(QueryAllGlobalModelRequest) returns (QueryAllGlobalModelResponse) {
     option (google.api.http).get = "/flmainchain/fedlearning/v1/global_model";
+  }
+
+  // ListRoundCommittee Queries a list of RoundCommittee items.
+  rpc GetRoundCommittee(QueryGetRoundCommitteeRequest) returns (QueryGetRoundCommitteeResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/round_committee/{round_id}";
+  }
+
+  // ListRoundCommittee defines the ListRoundCommittee RPC.
+  rpc ListRoundCommittee(QueryAllRoundCommitteeRequest) returns (QueryAllRoundCommitteeResponse) {
+    option (google.api.http).get = "/flmainchain/fedlearning/v1/round_committee";
   }
 }
 
@@ -201,5 +212,26 @@ message QueryAllGlobalModelRequest {
 // QueryAllGlobalModelResponse defines the QueryAllGlobalModelResponse message.
 message QueryAllGlobalModelResponse {
   repeated GlobalModel global_model = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetRoundCommitteeRequest defines the QueryGetRoundCommitteeRequest message.
+message QueryGetRoundCommitteeRequest {
+  uint64 round_id = 1;
+}
+
+// QueryGetRoundCommitteeResponse defines the QueryGetRoundCommitteeResponse message.
+message QueryGetRoundCommitteeResponse {
+  RoundCommittee round_committee = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllRoundCommitteeRequest defines the QueryAllRoundCommitteeRequest message.
+message QueryAllRoundCommitteeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllRoundCommitteeResponse defines the QueryAllRoundCommitteeResponse message.
+message QueryAllRoundCommitteeResponse {
+  repeated RoundCommittee round_committee = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
