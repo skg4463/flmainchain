@@ -1,40 +1,120 @@
 version: 1
 validation: sovereign
 default_denom: stake
-accounts: 
-- name: alice
-  coins:
-  - 20000token
-  - 200000000stake
-- name: bob
-  coins:
-  - 10000token
-  - 100000000stake
+
+accounts:
+  - name: alice
+    coins:
+      - 20000token
+      - 200000000stake
+    mnemonic: "city ring belt scan grain chat clinic unique fatal shrimp edge plastic borrow way bacon vote maximum normal cattle image bachelor awake museum battle"
+  - name: bob
+    coins:
+      - 100000token
+      - 300000000stake
+    mnemonic: "maximum crane sugar utility spatial crew magnet phone grain beauty else yard resist utility lady man auto differ midnight joy vast system venture glory"
+  - name: node0
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "toe bronze bless fiber bicycle lion image farm dinosaur pass meat lunar surprise humble genuine pencil blind arctic limb immense helmet satoshi surprise grocery"
+  - name: node1
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "addict ignore unfair subject smile banner attend aim ahead way party comfort forward simple story egg dress harvest palm relief craft found ripple enforce"
+  - name: node2
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "spice tiger police muscle century electric enforce scout survey ugly embody cupboard harbor vapor album donate zero humor novel pumpkin dwarf anchor avoid snap"
+  - name: node3
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "unaware theory move print tail lizard hobby fabric core month fury napkin unveil tuition police resource pride equip that table basic visual lucky unfold"
+  - name: node4
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "shock supreme vital human rain garden govern list fever lyrics borrow jaguar elephant exit flush improve tonight skull club surge consider feed father beach"
+  - name: node5
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "omit away gun dad deliver snack offer zoo mystery pattern angry select angry board pledge sword slot year execute present gadget brick mass sword"
+  - name: node6
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "trick dirt echo subject pelican upper hole clump frozen among asthma width boil odor jaguar frown educate betray march process actual artist miracle ten"
+  - name: node7
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "credit hidden blue trust oxygen engine wrist ball brass announce brother reduce maid trumpet catalog key news frozen movie easy will prepare someone news"
+  - name: node8
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "vanish come hair palm cute access reveal sick lottery benefit ribbon flat ability liberty twin excite exit price devote lounge town orphan final uncle"
+  - name: node9
+    coins:
+      - 1000000000stake
+      - 1000000token
+    mnemonic: "olympic address trick scrub end dust mechanic clump electric foot hammer attack become elegant estate ripple double undo uphold school reduce crime clay injury"
+
 client:
   openapi:
     path: docs/static/openapi.json
+
 faucet:
   name: bob
   coins:
-  - 50000token
-  - 100000stake
+    - 50000token
+    - 100000stake
   port: 4501
+
 validators:
-- name: alice
-  bonded: 100000000stake
-  app:
-    api:
-      address: "tcp://localhost:1318"
-    grpc:
-      address: "localhost:9091"
-    grpc-web:
-      address: "localhost:9092"
-  config:
-    p2p:
-      laddr: "tcp://0.0.0.0:26666"       # flstorage 26656과 다르게
-    rpc:
-      laddr: "tcp://0.0.0.0:26658"
-- name: validator1
-  bonded: 200000000stake
-- name: validator2
-  bonded: 100000000stake
+  - name: alice
+    bonded: 100000000stake
+    app:
+      api:
+        address: "tcp://localhost:1318"
+      grpc:
+        address: "localhost:9091"
+      grpc-web:
+        address: "localhost:9092"
+    config:
+      p2p:
+        laddr: "tcp://0.0.0.0:26666"
+      rpc:
+        laddr: "tcp://0.0.0.0:26658"
+  - name: bob
+    bonded: 200000000stake
+    app:
+      api:
+        address: "tcp://localhost:1319"
+      grpc:
+        address: "localhost:9093"
+      grpc-web:
+        address: "localhost:9094"
+    config:
+      p2p:
+        laddr: "tcp://0.0.0.0:26667"
+      rpc:
+        laddr: "tcp://0.0.0.0:26659"
+  - name: node0
+    bonded: 100000000stake
+    app:
+      api:
+        address: "tcp://localhost:1320"
+      grpc:
+        address: "localhost:9095"
+      grpc-web:
+        address: "localhost:9096"
+    config:
+      p2p:
+        laddr: "tcp://0.0.0.0:26668"
+      rpc:
+        laddr: "tcp://0.0.0.0:26660"

@@ -186,6 +186,7 @@ func New(
 		panic(err)
 	}
 
+
 	// add to default baseapp options
 	// enable optimistic execution
 	baseAppOptions = append(baseAppOptions, baseapp.SetOptimisticExecution())

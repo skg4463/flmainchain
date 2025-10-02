@@ -135,14 +135,26 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, _ codec.JSONCodec) json.RawMe
 func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block.
-// The begin block implementation is optional.
-func (am AppModule) BeginBlock(_ context.Context) error {
+func (am AppModule) BeginBlock(ctx context.Context) error {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	am.keeper.AdvanceRoundState(sdkCtx)
 	return nil
 }
 
 // EndBlock contains the logic that is automatically triggered at the end of each block.
-// The end block implementation is optional.
-func (am AppModule) EndBlock(_ context.Context) error {
+func (am AppModule) EndBlock(ctx context.Context) error {
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	height := sdkCtx.BlockHeight()
+
+	// 3N-1 블록에서 ATT 자동 집계
+	if (height > 1) && (height%3) == 2 {
+		am.keeper.AggregateScoresAndCreateATT(sdkCtx)
+	}
+	// 3N 블록에서 다음 라운드 위원회 선출
+	if (height > 1) && (height%3) == 0 {
+		am.keeper.ElectNextCommittee(sdkCtx)
+	}
+
 	return nil
 }
 
