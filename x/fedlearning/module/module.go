@@ -151,9 +151,9 @@ func (am AppModule) EndBlock(ctx context.Context) error {
 		am.keeper.AggregateScoresAndCreateATT(sdkCtx)
 	}
 	// 3N 블록에서 다음 라운드 위원회 선출
-	if (height > 1) && (height%3) == 0 {
-		am.keeper.ElectNextCommittee(sdkCtx)
-	}
+	// if (height > 1) && (height%3) == 0 {
+	// 	am.keeper.ElectNextCommittee(sdkCtx)
+	// }
 
 	return nil
 }

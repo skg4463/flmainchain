@@ -94,7 +94,9 @@ message MsgDeleteCurrentRoundResponse {}
 message MsgInitRound {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
-  repeated string initial_members = 2;
+  // repeated string initial_members = 2;
+  repeated string initial_l_nodes = 2; // L-node 목록용 필드
+  repeated string initial_c_nodes = 3; // C-node 목록용 필드
 }
 
 // MsgInitRoundResponse defines the MsgInitRoundResponse message.

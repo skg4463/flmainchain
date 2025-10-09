@@ -25,7 +25,6 @@ flstoraged query bank balances fls1nmfejs8r6mt584lm4h00470szx9q4g8ed4un7r  --nod
 
 
 1. 니모닉으로 각 체인에 계정 추가 (/.hermes/keys/flmainchain/keyring-test/relayer-flmainchain.json)
-
 (명령어용 환경변수 추가)
 HERMES_APP=~/.ignite/apps/hermes/bin/v1.13.1
 CONFIG_PATH=~/.ignite/relayer/hermes/flmainchain_flstorage
@@ -41,34 +40,29 @@ $HERMES_APP --config $CONFIG_PATH keys add --chain flstorage --mnemonic-file /de
 
 $HERMES_APP --config $CONFIG_PATH keys list --chain flmainchain
 $HERMES_APP --config $CONFIG_PATH keys list --chain flstorage
-
+(각 체인에 relayer- 확인)
 -> relayer account : fls1r5v5srda7xfth3hn2s26txvrcrntldjuqs34tt
 
 3. 각 계정에 자금 채우기 
-
 curl -X POST -d '{"address": "fls1r5v5srda7xfth3hn2s26txvrcrntldjuqs34tt", "coins": ["10000000stake"]}' http://localhost:4501/credit
-
 curl -X POST -d '{"address": "fls1r5v5srda7xfth3hn2s26txvrcrntldjuqs34tt", "coins": ["10000000stake"]}' http://localhost:4500/credit
-
+(채운 자금 확인)
+flmainchaind query bank balances fls1r5v5srda7xfth3hn2s26txvrcrntldjuqs34tt --node tcp://localhost:26658
+flstoraged query bank balances fls1r5v5srda7xfth3hn2s26txvrcrntldjuqs34tt 
 
 
 4. 릴레이어 및 헤르메스 시작
-
 $HERMES_APP --config $CONFIG_PATH create channel --a-chain flmainchain --b-chain flstorage --a-port fedlearning --b-port fedstoraging --new-client-connection --channel-version fedlearning-1
-
-
 
 $HERMES_APP --config $CONFIG_PATH start
 
 
 
-5.1  1라운드 초기화
+5.1  1라운드 초기화 (노드=2)
 
 MEMBERS=$(flmainchaind keys show alice -a),$(flmainchaind keys show bob -a)
 
 echo $MEMBERS
-
-
 
 5.2 init-round 트잭 전송
 
@@ -79,10 +73,28 @@ flmainchaind tx fedlearning init-round "$MEMBERS" --from alice --node tcp://loca
 -> 확인
 
 flmainchaind query fedlearning show-current-round --node tcp://localhost:26658
-
 flmainchaind query fedlearning show-round 1 --node tcp://localhost:26658
 
+------------------
+5.1 1라운드 초기화 (노드=10)
+# 10명의 L-node 주소 목록 생성 (로컬 키체인에서 조회)
+ALL_MEMBERS=$(for i in {0..9}; do flmainchaind keys show node$i -a | tr -d '\r'; echo -n ','; done | sed 's/,$//')
 
+# 5명의 초기 C-node 주소 목록 생성 (로컬 키체인에서 조회)
+INITIAL_C_NODES=$(for i in {0..4}; do flmainchaind keys show node$i -a | tr -d '\r'; echo -n ','; done | sed 's/,$//')
+
+# 생성된 목록 확인 (선택 사항)
+echo "L-NODES: $ALL_MEMBERS"
+echo "C-NODES: $INITIAL_C_NODES"
+
+5.2 init-round 트잭 전송
+1라운드 초기화
+flmainchaind tx fedlearning init-round "$ALL_MEMBERS" "$INITIAL_C_NODES" --from node0 --node tcp://localhost:26658 -y
+
+-> 확인
+
+flmainchaind query fedlearning show-current-round --node tcp://localhost:26658
+flmainchaind query fedlearning show-round 1 --node tcp://localhost:26658
 
 -----------------------------------------------------------------------
 
@@ -106,8 +118,6 @@ flmainchaind tx fedlearning submit-weight 1 b9be8a5e6612896cf8b84f9e3a2b591858b1
 
 flstoraged tx fedstoraging request-data-access b9be8a5e6612896cf8b84f9e3a2b591858b1e9e47f4bffbab6f9b81be253fe64 --from fls1w2evy6hkh9h807pdlsxmlhcgdrlt0wr0xw6hw6 -y
 
-
-
 go run main.go b9be8a5e6612896cf8b84f9e3a2b591858b1e9e47f4bffbab6f9b81be253fe64 ./downloaded_weight_bob.bin
 
 
@@ -119,14 +129,6 @@ go run main.go b9be8a5e6612896cf8b84f9e3a2b591858b1e9e47f4bffbab6f9b81be253fe64 
 flmainchaind tx fedlearning submit-score 1 fls1vva47v57ke002xn7n3qm43j70rr60mpntangj3 85 --from fls1vva47v57ke002xn7n3qm43j70rr60mpntangj3 --node tcp://localhost:26658 -y
 
 
-
-
-
-
-
-fls1p9jqgjchwvue5fdm2ltvcasq5svfpw6k7wufpg
-
-fls1vva47v57ke002xn7n3qm43j70rr60mpntangj3
 
 
 

@@ -125,9 +125,11 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod:      "InitRound",
-					Use:            "init-round [initial-members]",
+					Use:            "init-round [initial-l-nodes] [initial-c-nodes]",
 					Short:          "Send a init-round tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "initial_members", Varargs: true}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "initial_l_nodes", Varargs: false}, 
+						{ProtoField: "initial_c_nodes", Varargs: false}},
 				},
 				{
 					RpcMethod:      "SubmitWeight",

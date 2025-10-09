@@ -99,7 +99,7 @@ func (k Keeper) ElectNextCommittee(ctx sdk.Context) {
 	k.Round.Set(ctx, nextRoundID, types.Round{
 		RoundId:         nextRoundID,
 		Status:          "WeightSubmissionOpen",
-		RequiredLNodes:  nextCommitteeMembers, 
+		RequiredLNodes:  round.RequiredLNodes, 
 		SubmittedLNodes: []string{},
 		RequiredCNodes:  nextCommitteeMembers, 
 		SubmittedCNodes: []string{},

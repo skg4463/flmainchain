@@ -18,13 +18,13 @@ func (k msgServer) InitRound(goCtx context.Context, msg *types.MsgInitRound) (*t
 	k.Keeper.Round.Set(ctx, 1, types.Round{
 		RoundId:         1,
 		Status:          "WeightSubmissionOpen",
-		RequiredLNodes:  msg.InitialMembers,
+		RequiredLNodes:  msg.InitialLNodes,
 		SubmittedLNodes: []string{},
-		RequiredCNodes:  msg.InitialMembers,
+		RequiredCNodes:  msg.InitialCNodes,
 		SubmittedCNodes: []string{},
 	})
 	// Roundcommittee -> RoundCommittee 로 수정
-	k.Keeper.RoundCommittee.Set(ctx, 1, types.RoundCommittee{RoundId: 1, Members: msg.InitialMembers})
+	k.Keeper.RoundCommittee.Set(ctx, 1, types.RoundCommittee{RoundId: 1, Members: msg.InitialCNodes})
 
 	return &types.MsgInitRoundResponse{}, nil
 }
