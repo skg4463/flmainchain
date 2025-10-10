@@ -31,6 +31,10 @@ func (k Keeper) AdvanceRoundState(ctx sdk.Context) {
 }
 
 func (k Keeper) AggregateScoresAndCreateATT(ctx sdk.Context) {
+	// --- 측정용 로그 추가 ---
+    ctx.Logger().Info("PERF_MEASURE_START: AggregateScoresAndCreateATT")
+    // --- 추가 끝 ---
+
 	currentRound, err := k.CurrentRound.Get(ctx)
 	if err != nil { return }
 	round, err := k.Round.Get(ctx, currentRound.RoundId)
@@ -74,10 +78,18 @@ func (k Keeper) AggregateScoresAndCreateATT(ctx sdk.Context) {
 	round.Status = "AggregationComplete"
 	k.Round.Set(ctx, round.RoundId, round)
 	ctx.Logger().Info("ATT for round aggregated and saved.", "round", round.RoundId)
+	
+	// --- 측정용 로그 추가 ---
+    ctx.Logger().Info("PERF_MEASURE_END: AggregateScoresAndCreateATT")
+    // --- 추가 끝 ---
 }
 
 func (k Keeper) ElectNextCommittee(ctx sdk.Context) {
-    currentRound, err := k.CurrentRound.Get(ctx)
+    // --- 측정용 로그 추가 ---
+    ctx.Logger().Info("PERF_MEASURE_START: ElectNextCommittee")
+    // --- 추가 끝 ---
+
+	currentRound, err := k.CurrentRound.Get(ctx)
 	if err != nil { return }
 	round, err := k.Round.Get(ctx, currentRound.RoundId)
 	if err != nil || round.Status != "AggregationComplete" { return }
@@ -108,4 +120,8 @@ func (k Keeper) ElectNextCommittee(ctx sdk.Context) {
 	k.CurrentRound.Set(ctx, currentRound)
 
 	ctx.Logger().Info("Committee for next round elected.", "round", nextRoundID, "members", nextCommitteeMembers)
+	
+	// --- 측정용 로그 추가 ---
+    ctx.Logger().Info("PERF_MEASURE_END: ElectNextCommittee")
+    // --- 추가 끝 ---
 }
