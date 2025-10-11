@@ -28,6 +28,9 @@ func (k Keeper) AdvanceRoundState(ctx sdk.Context) {
 		k.Round.Set(ctx, round.RoundId, round)
 		ctx.Logger().Info("Round advanced to AggregationReady", "round", currentRound.RoundId)
 	}
+	if round.Status == "AggregationReady" {
+        k.AggregateScoresAndCreateATT(ctx)
+    }
 }
 
 func (k Keeper) AggregateScoresAndCreateATT(ctx sdk.Context) {
