@@ -1,10 +1,3 @@
-## Environment
-Ignite CLI version:             v29.3.1-dev
-Ignite CLI source hash:         845a1a8886b8a098ed56372bab45ddee5caea526
-Ignite CLI config version:      v1
-Cosmos SDK version:             v0.53.3
-Your go version:                go version go1.24.7 linux/amd64
-
 # flmainchain
 
 연합학습(Federated Learning) **기여도 평가 기반 블록체인**의 **메인체인(Layer 1)** 입니다.
