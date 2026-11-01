@@ -250,17 +250,6 @@ flmainchain/
 └── diagram.*                  # 아키텍처 다이어그램
 ```
 
-## 구현 현황 / 한계
-
-연구용 프로토타입이므로 설계와 다르거나 단순화된 부분이 있습니다.
-
-- **기여도 집계**: 현재는 C-node 점수의 단순 정수 평균입니다. (EWMA 기반 집계는 미구현)
-- **블록-라운드 매핑**: 고정된 "3블록 = 1라운드"가 아니라, 제출 완료 시점에 다음 블록의 BeginBlock에서 상태가 넘어갑니다. `EndBlock`의 높이 기반 로직과 `x/fedlearning/abci.go`는 사용하지 않습니다.
-- **합의 참여자**: 위원회 명단은 상태에 기록만 하며, 실제 블록 생성/합의 검증자 집합은 `config.yml`의 validator로 고정되어 있습니다.
-- **글로벌 모델**: FedAvg는 체인 밖에서 수행한다고 가정하며, 체인에는 해시만 저장합니다. (시뮬레이션에서는 더미 파일 사용)
-- `submit-global-model`은 라운드 상태를 직접 검사하지 않습니다. 상태가 `AggregationComplete`가 아니면 해시만 저장되고 위원회 선출은 일어나지 않습니다.
-- **IBC/ICQ**: 채널은 연결되지만 패킷 타입(`FedlearningPacketData`)은 `NoData`뿐이며, 사이드체인의 접근 권한 요청에 응답하는 ICQ 로직은 아직 없습니다.
-
 ## 참고
 
 - [Ignite CLI docs](https://docs.ignite.com)
@@ -290,7 +279,7 @@ flmainchaind query bank balances ADDRESS --node tcp://localhost:26658
 ```
 
 
-Relayer setting & hermes setting
+Relayer setting & hermes setting (간략)
 ```
 ⦁	잔액 쿼리
 flmainchaind query bank balances fls1ppkrhzyg6pf2gg7xxhyq8z8jcclgrn5j3kr765 
